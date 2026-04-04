@@ -1,0 +1,128 @@
+.footer-section {
+  background-color: #1a1a1a;
+  color: #ccc;
+  padding: 40px 0 20px;
+  margin-top: 60px;
+}
+
+.footer-col {
+  margin-bottom: 30px;
+}
+
+.footer-col h5 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  color: #667eea;
+}
+
+.contact-info p {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.contact-info a {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+  color: #764ba2;
+}
+
+.address-info p {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-link {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.social-link:hover {
+  color: #667eea;
+}
+
+.payment-section {
+  background-color: #0d0d0d;
+  margin-top: 30px;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.payment-method {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #1a1a1a;
+  color: #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+  background-color: #667eea;
+  color: white;
+}
+
+.copyright {
+  padding-top: 20px;
+  border-top: 1px solid #333;
+  font-size: 0.9rem;
+}
+
+.copyright p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-col {
+    margin-bottom: 25px;
+  }
+
+  .footer-col h5 {
+    font-size: 1rem;
+  }
+
+  .payment-img {
+    max-width: 200px;
+  }
+}
