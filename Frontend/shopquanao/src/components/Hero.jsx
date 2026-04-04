@@ -1,5 +1,6 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import '../styles/Hero.css';
+import heroImage from '../assets/images/hero-fashion.svg';
 
 export default function Hero() {
   return (
@@ -22,21 +23,7 @@ export default function Hero() {
           </Col>
           <Col lg={6} className="image-section">
             <div className="hero-image-placeholder">
-              <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" className="hero-svg">
-                <defs>
-                  <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{stopColor: '#667eea', stopOpacity: 1}} />
-                    <stop offset="100%" style={{stopColor: '#764ba2', stopOpacity: 1}} />
-                  </linearGradient>
-                </defs>
-                <rect width="400" height="400" fill="url(#heroGradient)" />
-                <circle cx="200" cy="180" r="100" fill="rgba(255,255,255,0.3)" />
-                <circle cx="150" cy="250" r="60" fill="rgba(255,255,255,0.2)" />
-                <circle cx="280" cy="300" r="80" fill="rgba(255,255,255,0.15)" />
-                <text x="200" y="210" textAnchor="middle" fontSize="48" fill="white" fontWeight="bold">
-                  👗
-                </text>
-              </svg>
+              <img src={heroImage} alt="Fashion Mannequin" className="hero-svg" />
             </div>
           </Col>
         </Row>

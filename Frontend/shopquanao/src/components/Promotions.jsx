@@ -1,32 +1,37 @@
 import { Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import '../styles/Promotions.css';
+import promoSummer from '../assets/images/promo-summer.svg';
+import promoWomen from '../assets/images/promo-women.svg';
+import promoMen from '../assets/images/promo-men.svg';
+import promoJeans from '../assets/images/promo-jeans.svg';
+import promoDress from '../assets/images/promo-dress.svg';
 
 const promotionImages = [
   {
     id: 1,
     title: 'Mùa Hè - Giảm 40%',
-    color: '#f97316'
+    image: promoSummer
   },
   {
     id: 2,
     title: 'Bộ Sưu Tập Nữ',
-    color: '#ec4899'
+    image: promoWomen
   },
   {
     id: 3,
     title: 'Áo Sơ Mi Nam',
-    color: '#3b82f6'
+    image: promoMen
   },
   {
     id: 4,
     title: 'Quần Denim',
-    color: '#1e40af'
+    image: promoJeans
   },
   {
     id: 5,
     title: 'Đầm Dạo Phố',
-    color: '#a855f7'
+    image: promoDress
   },
 ];
 
@@ -70,20 +75,9 @@ export default function Promotions() {
         <div className="carousel-wrapper">
           <div className="carousel-container">
             {/* Main Carousel */}
-            <div className="carousel-main" style={{backgroundColor: promotionImages[currentIndex].color}}>
+            <div className="carousel-main">
               <div className="carousel-slide">
-                <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" className="carousel-image">
-                  <defs>
-                    <linearGradient id="promoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{stopColor: promotionImages[currentIndex].color, stopOpacity: 1}} />
-                      <stop offset="100%" style={{stopColor: promotionImages[currentIndex].color, stopOpacity: 0.8}} />
-                    </linearGradient>
-                  </defs>
-                  <rect width="1200" height="400" fill="url(#promoGradient)" />
-                  <circle cx="200" cy="100" r="80" fill="rgba(255,255,255,0.2)" />
-                  <circle cx="1000" cy="300" r="120" fill="rgba(255,255,255,0.15)" />
-                  <circle cx="600" cy="400" r="100" fill="rgba(255,255,255,0.1)" />
-                </svg>
+                <img src={promotionImages[currentIndex].image} alt={promotionImages[currentIndex].title} className="carousel-image" />
                 <div className="slide-overlay">
                   <h3 className="slide-title">{promotionImages[currentIndex].title}</h3>
                 </div>
@@ -127,10 +121,9 @@ export default function Promotions() {
                   key={promo.id}
                   className={`thumbnail ${index === currentIndex ? 'active' : ''}`}
                   onClick={() => goToSlide(index)}
-                  style={{backgroundColor: promo.color}}
                 >
                   <div className="thumbnail-content">
-                    <span className="thumbnail-icon">🎁</span>
+                    <img src={promo.image} alt={promo.title} style={{width: '80%', height: '80%', objectFit: 'cover'}} />
                   </div>
                   <div className="thumbnail-label">{promo.title}</div>
                 </div>

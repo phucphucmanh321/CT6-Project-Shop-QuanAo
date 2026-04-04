@@ -1,6 +1,6 @@
 .footer-section {
   background-color: #1a1a1a;
-  color: #ccc;
+  color: #999999;
   padding: 40px 0 20px;
   margin-top: 60px;
 }
@@ -10,7 +10,7 @@
 }
 
 .footer-col h5 {
-  color: white;
+  color: #ffffff;
   font-weight: 700;
   margin-bottom: 20px;
   font-size: 1.1rem;
@@ -27,14 +27,14 @@
 }
 
 .footer-links a {
-  color: #ccc;
+  color: #999999;
   text-decoration: none;
   transition: color 0.3s ease;
   font-size: 0.95rem;
 }
 
 .footer-links a:hover {
-  color: #667eea;
+  color: #333333;
 }
 
 .contact-info p {
@@ -43,13 +43,13 @@
 }
 
 .contact-info a {
-  color: #667eea;
+  color: #333333;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .contact-info a:hover {
-  color: #764ba2;
+  color: #666666;
 }
 
 .address-info p {
@@ -65,14 +65,14 @@
 }
 
 .social-link {
-  color: #ccc;
+  color: #999999;
   text-decoration: none;
   transition: color 0.3s ease;
   font-size: 0.95rem;
 }
 
 .social-link:hover {
-  color: #667eea;
+  color: #333333;
 }
 
 .payment-section {
@@ -92,7 +92,7 @@
   display: inline-block;
   padding: 8px 16px;
   background-color: #1a1a1a;
-  color: #ccc;
+  color: #999999;
   border-radius: 6px;
   font-size: 0.9rem;
   transition: all 0.3s ease;

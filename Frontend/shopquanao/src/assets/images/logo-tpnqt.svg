@@ -1,0 +1,36 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="55" fill="none" stroke="#000000" stroke-width="3"/>
+  
+  <!-- T -->
+  <g>
+    <rect x="35" y="25" width="50" height="8" fill="#000000" rx="2"/>
+    <rect x="55" y="25" width="10" height="45" fill="#000000" rx="2"/>
+  </g>
+  
+  <!-- P -->
+  <g>
+    <rect x="30" y="25" width="10" height="45" fill="#000000" rx="2"/>
+    <path d="M 40 25 L 50 25 Q 55 25 55 32 Q 55 38 50 38 L 40 38" fill="none" stroke="#000000" stroke-width="2"/>
+    <rect x="30" y="32" width="25" height="2" fill="#000000"/>
+  </g>
+  
+  <!-- N -->
+  <g>
+    <rect x="60" y="25" width="10" height="45" fill="#000000" rx="2"/>
+    <path d="M 70 25 L 80 50 L 80 70" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+    <rect x="70" y="25" width="10" height="45" fill="#000000" rx="2"/>
+  </g>
+  
+  <!-- Q -->
+  <g>
+    <circle cx="50" cy="85" r="15" fill="none" stroke="#000000" stroke-width="2"/>
+    <line x1="60" y1="92" x2="68" y2="100" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- T (bottom) -->
+  <g>
+    <rect x="70" y="78" width="30" height="6" fill="#000000" rx="2"/>
+    <rect x="82" y="78" width="6" height="25" fill="#000000" rx="2"/>
+  </g>
+</svg>
