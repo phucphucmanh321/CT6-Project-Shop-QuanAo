@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "4b59e462-4b92-4cbe-a17d-92ef5210b0f1",
+    "name": "ShopQuanAo Products API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Search Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?q=TEE&page=1&limit=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "TEE"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        "description": "Tim kiem san pham theo tu khoa, danh muc, gia va phan trang."
+      },
+      "response": []
+    },
+    {
+      "name": "Search Products By Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?cate_id=1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "cate_id",
+              "value": "1"
+            }
+          ]
+        },
+        "description": "Loc san pham theo ma danh muc."
+      },
+      "response": []
+    },
+    {
+      "name": "Search Products By Price Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?min_price=200000&max_price=600000",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "min_price",
+              "value": "200000"
+            },
+            {
+              "key": "max_price",
+              "value": "600000"
+            }
+          ]
+        },
+        "description": "Loc san pham theo khoang gia."
+      },
+      "response": []
+    },
+    {
+      "name": "Product Detail",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "1"
+          ]
+        },
+        "description": "Lay chi tiet san pham theo id, kem danh sach anh va ton kho theo size."
+      },
+      "response": []
+    },
+    {
+      "name": "Product Detail Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products/9999",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "9999"
+          ]
+        },
+        "description": "Test truong hop san pham khong ton tai."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.lehuuminhquan.id.vn"
+    }
+  ]
+}
