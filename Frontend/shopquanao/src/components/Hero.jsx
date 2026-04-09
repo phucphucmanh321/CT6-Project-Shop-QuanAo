@@ -1,6 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import '../styles/Hero.css';
-import heroImage from '../assets/images/hero-fashion.svg';
 
 export default function Hero() {
   return (
@@ -23,7 +22,7 @@ export default function Hero() {
           </Col>
           <Col lg={6} className="image-section">
             <div className="hero-image-placeholder">
-              <img src={heroImage} alt="Fashion Mannequin" className="hero-svg" />
+              Ảnh Hero
             </div>
           </Col>
         </Row>

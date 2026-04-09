@@ -1,0 +1,13 @@
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background white -->
+  <rect width="800" height="800" fill="#ffffff"/>
+  
+  <!-- Outer circle - thick stroke -->
+  <circle cx="400" cy="400" r="350" fill="none" stroke="#000000" stroke-width="15"/>
+  
+  <!-- Inner circle - thin stroke -->
+  <circle cx="400" cy="400" r="330" fill="none" stroke="#000000" stroke-width="4"/>
+  
+  <!-- TPNQT Text - italic style centered -->
+  <text x="400" y="440" font-family="Georgia, serif" font-size="160" font-weight="400" text-anchor="middle" fill="#000000" font-style="italic" letter-spacing="4">TPNQT</text>
+</svg>

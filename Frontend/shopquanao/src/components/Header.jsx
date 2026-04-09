@@ -1,68 +1,56 @@
-import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
-import { FaShoppingCart, FaUser, FaList } from 'react-icons/fa';
-import '../styles/Header.css';
-
-const categories = [
-  { id: 1, name: 'Áo' },
-  { id: 2, name: 'Quần' },
-  { id: 3, name: 'Váy' },
-  { id: 4, name: 'Đầm' },
-  { id: 5, name: 'Áo khoác' },
-  { id: 6, name: 'Phụ kiện' },
-];
+import { Nav, Container, Dropdown, Badge } from "react-bootstrap";
+import { FaShoppingCart, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import "../styles/Header.css";
+import { useAuth } from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
 
 export default function Header() {
+  const { isAuthenticated, user, logout } = useAuth();
+  const { getTotalItems } = useCart();
+
   return (
     <header className="header-section">
-      <Container>
-        <Navbar expand="lg" className="navbar-custom py-3">
-          <Navbar.Brand href="#" className="brand-logo">
-            <div className="logo-placeholder">
-              <span className="logo-text">Fashion</span>
-            </div>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto gap-3 align-items-center">
-              <Nav.Link href="#" className="nav-link-item">
-                <FaUser className="me-2" />
-                Tài khoản
-              </Nav.Link>
-              <Nav.Link href="#" className="nav-link-item">
-                <FaShoppingCart className="me-2" />
-                Giỏ hàng (0)
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      </Container>
-      
       <nav className="navbar-menu">
         <Container>
           <div className="d-flex justify-content-between align-items-center">
-            {/* Categories Dropdown */}
-            <div className="categories-dropdown">
-              <Dropdown>
-                <Dropdown.Toggle variant="light" id="categories-dropdown" className="categories-btn">
-                  <FaList className="me-2" />
-                  Danh mục
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="categories-menu">
-                  {categories.map((cat) => (
-                    <Dropdown.Item key={cat.id} href="#">
-                      {cat.name}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-
-            {/* Main Menu */}
+            <Link to="/" className="navbar-brand">
+              <strong style={{ fontSize: "24px", color: "#333" }}>TPNQT</strong>
+            </Link>
+            
             <Nav className="main-menu">
-              <Nav.Link href="#" className="menu-item">Trang chủ</Nav.Link>
-              <Nav.Link href="#" className="menu-item">Sản phẩm</Nav.Link>
-              <Nav.Link href="#" className="menu-item">Về chúng tôi</Nav.Link>
-              <Nav.Link href="#" className="menu-item">Liên hệ</Nav.Link>
+              <Nav.Link as={Link} to="/" style={{ color: 'white' }}>Trang chủ</Nav.Link>
+              <Nav.Link as={Link} to="/categories" style={{ color: 'white' }}>Sản phẩm</Nav.Link>
+              <Nav.Link href="#" style={{ color: 'white' }}>Về chúng tôi</Nav.Link>
+              <Nav.Link href="#" style={{ color: 'white' }}>Liên hệ</Nav.Link>
+            </Nav>
+
+            <Nav className="nav-top-icons">
+              {isAuthenticated ? (
+                <Dropdown>
+                  <Dropdown.Toggle style={{ background: 'none', border: 'none', color: 'white' }}>
+                    <FaUser className="me-2" />
+                    {user?.name}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                  <Dropdown.Item onClick={logout}>
+                      <FaSignOutAlt className="me-2" />
+                      Đăng xuất
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <>
+                  <Nav.Link as={Link} to="/login" style={{ color: 'white' }}>Đăng nhập</Nav.Link>
+                  <Nav.Link as={Link} to="/register" style={{ color: 'white' }}>Đăng ký</Nav.Link>
+                </>
+              )}
+              <Nav.Link as={Link} to="/cart" style={{ position: 'relative', color: 'white' }}>
+                <FaShoppingCart />
+                {getTotalItems() > 0 && (
+                  <Badge bg="danger">{getTotalItems()}</Badge>
+                )}
+              </Nav.Link>
             </Nav>
           </div>
         </Container>

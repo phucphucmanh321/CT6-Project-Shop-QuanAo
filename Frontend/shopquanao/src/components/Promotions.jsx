@@ -1,37 +1,27 @@
 import { Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import '../styles/Promotions.css';
-import promoSummer from '../assets/images/promo-summer.svg';
-import promoWomen from '../assets/images/promo-women.svg';
-import promoMen from '../assets/images/promo-men.svg';
-import promoJeans from '../assets/images/promo-jeans.svg';
-import promoDress from '../assets/images/promo-dress.svg';
 
 const promotionImages = [
   {
     id: 1,
-    title: 'Mùa Hè - Giảm 40%',
-    image: promoSummer
+    title: 'Mùa Hè - Giảm 40%'
   },
   {
     id: 2,
-    title: 'Bộ Sưu Tập Nữ',
-    image: promoWomen
+    title: 'Bộ Sưu Tập Nữ'
   },
   {
     id: 3,
-    title: 'Áo Sơ Mi Nam',
-    image: promoMen
+    title: 'Áo Sơ Mi Nam'
   },
   {
     id: 4,
-    title: 'Quần Denim',
-    image: promoJeans
+    title: 'Quần Denim'
   },
   {
     id: 5,
-    title: 'Đầm Dạo Phố',
-    image: promoDress
+    title: 'Đầm Dạo Phố'
   },
 ];
 
@@ -77,7 +67,7 @@ export default function Promotions() {
             {/* Main Carousel */}
             <div className="carousel-main">
               <div className="carousel-slide">
-                <img src={promotionImages[currentIndex].image} alt={promotionImages[currentIndex].title} className="carousel-image" />
+                <div className="carousel-placeholder">Ảnh Khuyến Mãi</div>
                 <div className="slide-overlay">
                   <h3 className="slide-title">{promotionImages[currentIndex].title}</h3>
                 </div>
@@ -123,7 +113,9 @@ export default function Promotions() {
                   onClick={() => goToSlide(index)}
                 >
                   <div className="thumbnail-content">
-                    <img src={promo.image} alt={promo.title} style={{width: '80%', height: '80%', objectFit: 'cover'}} />
+                    <div style={{width: '80%', height: '80%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px'}}>
+                      Ảnh
+                    </div>
                   </div>
                   <div className="thumbnail-label">{promo.title}</div>
                 </div>
