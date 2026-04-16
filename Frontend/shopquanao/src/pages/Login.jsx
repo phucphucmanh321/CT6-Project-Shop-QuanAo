@@ -1,115 +1,71 @@
-import { useState } from 'react';
-import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import '../styles/Auth.css';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const { login, isLoading, error } = useAuth();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const [localError, setLocalError] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLocalError('');
-
-    if (!email || !password) {
-      setLocalError('Vui lòng nhập email và mật khẩu');
-      return;
-    }
-
+  const onSubmit = async (data) => {
     try {
-      await login(email, password);
-      navigate('/');
+      const res = await login(data.email, data.password);
+      if (res) {
+        navigate('/');
+      } else {
+        alert('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin!');
+      }
     } catch (err) {
-      setLocalError(err.message || 'Đăng nhập thất bại');
+      alert((err && err.message) ? err.message : 'Đăng nhập thất bại.');
     }
   };
 
+  const emailClass = errors.email ? 'form-control is-invalid' : 'form-control';
+  const passClass = errors.password ? 'form-control is-invalid' : 'form-control';
+
   return (
-    <div className="auth-page">
-      <Container>
-        <div className="auth-form-wrapper">
-          <div className="auth-form-container">
-            <h2 className="auth-title">Đăng Nhập</h2>
-            
-            {(error || localError) && (
-              <Alert variant="danger" onClose={() => setLocalError('')} dismissible>
-                {error || localError}
-              </Alert>
-            )}
-
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Nhập email của bạn"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Mật khẩu</Form.Label>
-                <div className="password-input-group">
-                  <Form.Control
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Nhập mật khẩu của bạn"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isLoading}
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-4">
+          <div className="card shadow border-0">
+            <div className="card-body p-4">
+              <h2 className="text-center mb-4 fw-bold text-primary">Đăng Nhập</h2>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className={emailClass}
+                    placeholder="name@example.com"
+                    {...register('email', { required: 'Email là bắt buộc' })}
                   />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                    disabled={isLoading}
-                  >
-                    {showPassword ? '👁️' : '👁️‍🗨️'}
-                  </button>
+                  {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                 </div>
-              </Form.Group>
 
-              <Button
-                variant="primary"
-                type="submit"
-                className="w-100 auth-button"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                      className="me-2"
-                    />
-                    Đang đăng nhập...
-                  </>
-                ) : (
-                  'Đăng Nhập'
-                )}
-              </Button>
-            </Form>
+                <div className="mb-3">
+                  <label className="form-label">Mật khẩu</label>
+                  <input
+                    type="password"
+                    className={passClass}
+                    placeholder="••••••••"
+                    {...register('password', { required: 'Mật khẩu là bắt buộc' })}
+                  />
+                  {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                </div>
 
-            <div className="auth-footer">
-              <p>
-                Chưa có tài khoản?{' '}
-                <Link to="/register" className="auth-link">
-                  Đăng ký ngay
-                </Link>
-              </p>
+                <button type="submit" className="btn btn-custom w-100 py-2 mt-2">
+                  Đăng Nhập
+                </button>
+              </form>
+              <div className="text-center mt-3">
+                <span>Chưa có tài khoản? </span>
+                <Link to="/register" className="text-decoration-none">Đăng ký ngay</Link>
+              </div>
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
 }

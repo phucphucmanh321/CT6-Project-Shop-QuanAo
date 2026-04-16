@@ -36,10 +36,10 @@ export default function Checkout() {
             Quay Lại
           </Link>
           
-          <Alert variant="warning">
+            <Alert variant="warning">
             <h5>Giỏ hàng của bạn trống!</h5>
             <p>Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.</p>
-            <Link to="/categories" className="btn btn-primary btn-sm mt-2">
+            <Link to="/categories" className="btn btn-custom btn-sm mt-2">
               Tiếp Tục Mua Sắm
             </Link>
           </Alert>

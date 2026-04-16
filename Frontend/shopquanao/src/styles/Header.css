@@ -1,9 +1,9 @@
 .header-section {
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  background: #ffffff;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #e9e9e9;
 }
 
 /* Logo Section */
@@ -87,6 +87,24 @@
   margin: 0;
 }
 
+.dropdown-toggle-plain {
+  background: none !important;
+  border: none !important;
+  color: #000 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-outline {
+  border: 1px solid #000;
+  padding: 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .overlay-nav-link {
   display: flex;
   align-items: center;
@@ -120,10 +138,8 @@
 }
 
 .navbar-menu {
-  background: linear-gradient(90deg, #1a1a1a 0%, #000000 50%, #1a1a1a 100%);
-  border-top: 2px solid #333333;
-  border-bottom: 2px solid #333333;
-  backdrop-filter: blur(10px);
+  background: transparent;
+  padding: 0.25rem 0;
 }
 
 /* Categories Dropdown */
@@ -132,13 +148,13 @@
 }
 
 .categories-btn {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background-color: transparent !important;
+  color: #000 !important;
+  border: 1px solid #e6e6e6 !important;
   font-weight: 600;
-  padding: 10px 18px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   letter-spacing: 0.5px;
@@ -148,9 +164,8 @@
 
 .categories-btn:hover,
 .categories-btn:focus {
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: #fafafa !important;
+  border-color: #dcdcdc !important;
 }
 
 .categories-menu {
@@ -188,22 +203,20 @@
 
 .menu-item {
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8) !important;
-  padding: 15px 20px !important;
-  transition: all 0.3s ease;
+  color: #000000 !important;
+  padding: 12px 14px !important;
+  transition: color 0.2s ease, border-bottom 0.2s ease;
   text-decoration: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
   position: relative;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   font-size: 13px;
 }
 
 .menu-item:hover {
-  color: #ffffff !important;
-  border-bottom: 3px solid #ffffff;
-  background-color: rgba(255, 255, 255, 0.08);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  color: #444444 !important;
+  border-bottom: 2px solid #444444;
 }
 
 /* Responsive Design */
@@ -319,15 +332,17 @@
 
 .cart-badge {
   position: absolute !important;
-  top: -5px !important;
-  right: -8px !important;
+  top: -6px !important;
+  right: -10px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 0.7rem !important;
-  padding: 0.2rem 0.4rem !important;
+  font-size: 0.72rem !important;
+  padding: 0.25rem 0.45rem !important;
   border-radius: 50% !important;
   font-weight: 700 !important;
+  background: #000 !important;
+  color: #fff !important;
   animation: badgePopIn 0.3s ease-out;
 }
 

@@ -1,180 +1,85 @@
-import { useState } from 'react';
-import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import '../styles/Auth.css';
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const { register, isLoading, error } = useAuth();
+const Register = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register: registerUser } = useAuth();
   const navigate = useNavigate();
-  const [localError, setLocalError] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLocalError('');
-
-    // Validation
-    if (!formData.name || !formData.email || !formData.password || !formData.passwordConfirm) {
-      setLocalError('Vui lòng điền tất cả các trường');
-      return;
-    }
-
-    if (formData.password !== formData.passwordConfirm) {
-      setLocalError('Mật khẩu không khớp');
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setLocalError('Mật khẩu phải có ít nhất 6 ký tự');
-      return;
-    }
-
+  const onSubmit = async (data) => {
     try {
-      await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-      navigate('/');
+      const res = await registerUser({ fullName: data.fullName, email: data.email, password: data.password });
+      if (res) {
+        alert('Đăng ký thành công!');
+        navigate('/login');
+      } else {
+        alert('Đăng ký thất bại. Vui lòng thử lại.');
+      }
     } catch (err) {
-      console.error('Registration error:', err);
-      setLocalError(err.message || 'Đăng ký thất bại');
+      alert(err?.message || 'Đăng ký thất bại');
     }
   };
 
   return (
-    <div className="auth-page">
-      <Container>
-        <div className="auth-form-wrapper">
-          <div className="auth-form-container">
-            <h2 className="auth-title">Đăng Ký</h2>
-            
-            {(error || localError) && (
-              <Alert variant="danger" onClose={() => setLocalError('')} dismissible>
-                {error || localError}
-              </Alert>
-            )}
-
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label>Tên đầy đủ</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  placeholder="Nhập tên của bạn"
-                  value={formData.name}
-                  onChange={handleChange}
-                  disabled={isLoading}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  placeholder="Nhập email của bạn"
-                  value={formData.email}
-                  onChange={handleChange}
-                  disabled={isLoading}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Mật khẩu</Form.Label>
-                <div className="password-input-group">
-                  <Form.Control
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    placeholder="Nhập mật khẩu (ít nhất 6 ký tự)"
-                    value={formData.password}
-                    onChange={handleChange}
-                    disabled={isLoading}
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-5">
+          <div className="card shadow border-0">
+            <div className="card-body p-4">
+              <h2 className="text-center mb-4 fw-bold text-success">Đăng Ký Tài Khoản</h2>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="mb-3">
+                  <label className="form-label">Họ và tên</label>
+                  <input
+                    type="text"
+                    className={`form-control ${errors.fullName ? 'is-invalid' : ''}`}
+                    {...register('fullName', { required: 'Vui lòng nhập họ tên' })}
                   />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                    disabled={isLoading}
-                  >
-                    {showPassword ? '👁️' : '👁️‍🗨️'}
-                  </button>
+                  {errors.fullName && <div className="invalid-feedback">{errors.fullName.message}</div>}
                 </div>
-              </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Xác nhận mật khẩu</Form.Label>
-                <div className="password-input-group">
-                  <Form.Control
-                    type={showPasswordConfirm ? 'text' : 'password'}
-                    name="passwordConfirm"
-                    placeholder="Xác nhận mật khẩu"
-                    value={formData.passwordConfirm}
-                    onChange={handleChange}
-                    disabled={isLoading}
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                    {...register('email', { 
+                      required: 'Email là bắt buộc',
+                      pattern: { value: /^\S+@\S+$/i, message: 'Email không hợp lệ' }
+                    })}
                   />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                    disabled={isLoading}
-                  >
-                    {showPasswordConfirm ? '👁️' : '👁️‍🗨️'}
-                  </button>
+                  {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                 </div>
-              </Form.Group>
 
-              <Button
-                variant="primary"
-                type="submit"
-                className="w-100 auth-button"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                      className="me-2"
-                    />
-                    Đang đăng ký...
-                  </>
-                ) : (
-                  'Đăng Ký'
-                )}
-              </Button>
-            </Form>
+                <div className="mb-3">
+                  <label className="form-label">Mật khẩu</label>
+                  <input
+                    type="password"
+                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                    {...register('password', { 
+                      required: 'Mật khẩu là bắt buộc',
+                      minLength: { value: 6, message: 'Tối thiểu 6 ký tự' }
+                    })}
+                  />
+                  {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+                </div>
 
-            <div className="auth-footer">
-              <p>
-                Đã có tài khoản?{' '}
-                <Link to="/login" className="auth-link">
-                  Đăng nhập ngay
-                </Link>
-              </p>
+                <button type="submit" className="btn btn-success w-100 py-2 mt-2">
+                  Tạo tài khoản
+                </button>
+              </form>
+              <div className="text-center mt-3">
+                <span>Đã có tài khoản? </span>
+                <Link to="/login" className="text-decoration-none">Đăng nhập</Link>
+              </div>
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </div>
   );
-}
+};
+
+export default Register;

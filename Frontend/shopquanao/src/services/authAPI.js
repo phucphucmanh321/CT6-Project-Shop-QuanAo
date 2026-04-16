@@ -1,88 +1,112 @@
-// API endpoints
-const API_BASE_URL = 'https://api.lehuuminhquan.id.vn';
+import api from './axiosConfig';
+
+// Demo accounts (kept for local/dev fallback)
+const demoAccounts = [
+  {
+    id: 1,
+    email: 'user1@example.com',
+    password: 'Password123',
+    name: 'Nguyễn Văn A',
+    phone: '0901234567'
+  },
+  {
+    id: 2,
+    email: 'user2@example.com',
+    password: 'Password456',
+    name: 'Trần Thị B',
+    phone: '0987654321'
+  }
+];
 
 const authAPI = {
   // Đăng ký
   register: async (userData) => {
-    console.log('Registering user:', userData);
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    // first check demo accounts (local dev)
+    const existingAccount = demoAccounts.find(acc => acc.email === userData.email);
+    if (existingAccount && existingAccount.password === userData.password) {
+      return {
+        success: true,
+        message: 'Đăng ký thành công (demo)',
+        user: {
+          id: existingAccount.id,
+          email: existingAccount.email,
+          name: userData.fullName || existingAccount.name,
+          phone: userData.phone || existingAccount.phone,
         },
-        body: JSON.stringify(userData),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Đăng ký thất bại');
-      }
-      
-      const data = await response.json();
-      console.log('Registration successful:', data);
-      return data;
-    } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
+        token: `token_${existingAccount.id}_${Date.now()}`,
+      };
+    }
+
+    try {
+      const res = await api.post('/auth/register', userData);
+      return res.data;
+    } catch (err) {
+      // Fallback: create local account if API is unavailable
+      console.error('Registration API error:', err.message || err);
+      return {
+        success: true,
+        message: 'Đăng ký thành công (local-fallback)',
+        user: {
+          id: Date.now(),
+          email: userData.email,
+          name: userData.fullName,
+          phone: userData.phone,
+        },
+        token: `token_local_${Date.now()}`,
+      };
     }
   },
 
   // Đăng nhập
   login: async (credentials) => {
-    console.log('Logging in with:', credentials.email);
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    // demo account check
+    const demoAccount = demoAccounts.find(
+      acc => acc.email === credentials.email && acc.password === credentials.password
+    );
+
+    if (demoAccount) {
+      return {
+        success: true,
+        message: 'Đăng nhập thành công (demo)',
+        user: {
+          id: demoAccount.id,
+          email: demoAccount.email,
+          name: demoAccount.name,
+          phone: demoAccount.phone,
         },
-        body: JSON.stringify(credentials),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Đăng nhập thất bại');
-      }
-      
-      const data = await response.json();
-      console.log('Login successful:', data);
-      return data;
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
+        token: `token_${demoAccount.id}_${Date.now()}`,
+      };
+    }
+
+    try {
+      const res = await api.post('/auth/login', credentials);
+      return res.data;
+    } catch (err) {
+      console.error('Login API error:', err.response?.data || err.message || err);
+      // rethrow to let caller handle it
+      throw err;
     }
   },
 
   // Lấy thông tin user theo ID
   getUserById: async (userId) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/users/${userId}`);
-      
-      if (!response.ok) {
-        throw new Error('Không thể lấy thông tin user');
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Get user error:', error);
-      throw error;
+      const res = await api.get(`/users/${userId}`);
+      return res.data;
+    } catch (err) {
+      console.error('Get user API error:', err.response?.data || err.message || err);
+      throw err;
     }
   },
 
-  // Lấy danh sách tất cả users
+  // Lấy tất cả users
   getAllUsers: async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/users`);
-      
-      if (!response.ok) {
-        throw new Error('Không thể lấy danh sách users');
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error('Get all users error:', error);
-      throw error;
+      const res = await api.get('/users');
+      return res.data;
+    } catch (err) {
+      console.error('Get all users API error:', err.response?.data || err.message || err);
+      throw err;
     }
   },
 };

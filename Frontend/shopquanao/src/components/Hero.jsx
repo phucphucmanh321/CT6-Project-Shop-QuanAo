@@ -12,7 +12,7 @@ export default function Hero() {
               Khám phá bộ sưu tập quần áo mới nhất với phong cách hiện đại và chất lượng cao
             </p>
             <div className="hero-buttons">
-              <button className="btn btn-primary btn-lg me-3">
+              <button className="btn btn-custom btn-lg me-3">
                 Mua Sắm Ngay
               </button>
               <button className="btn btn-outline-primary btn-lg">

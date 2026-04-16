@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
+import { Container, Spinner, Alert } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Products.css';
@@ -60,45 +60,29 @@ export default function Products() {
           <Alert variant="info">Chưa có sản phẩm nào</Alert>
         ) : (
           <>
-            <Row>
-              {products.slice(0, 6).map((product) => (
-                <Col key={product.id} md={6} lg={4} className="mb-4">
-                  <Card className="product-card h-100">
-                    <div className="product-image">
-                      {product.image ? (
-                        <img src={product.image} alt={product.name} className="card-img-top" />
-                      ) : (
-                        <div className="product-placeholder">Ảnh sản phẩm</div>
-                      )}
+            <div className="product-grid">
+              {products.slice(0, 12).map((product) => (
+                <article key={product.id} className="product-card">
+                  <div className="product-image">
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} />
+                    ) : (
+                      <div className="product-placeholder">Ảnh sản phẩm</div>
+                    )}
+                  </div>
+                  <div className="product-meta">
+                    <h3 className="product-title">{product.name}</h3>
+                    <div className="product-price">{product.price ? `${product.price.toLocaleString('vi-VN')}₫` : 'Liên hệ'}</div>
+                    <div className="mt-3">
+                      <Link to={`/product/${product.id}`} className="btn btn-custom w-100">Xem chi tiết</Link>
                     </div>
-                    <Card.Body className="d-flex flex-column">
-                      <Card.Title>{product.name}</Card.Title>
-                      <Card.Text className="price-text">
-                        {product.price ? `${product.price.toLocaleString('vi-VN')}₫` : 'Liên hệ'}
-                      </Card.Text>
-                      <div className="mt-auto">
-                        <Link 
-                          to={`/product/${product.id}`}
-                          className="btn btn-primary w-100"
-                        >
-                          Xem chi tiết
-                        </Link>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
+                  </div>
+                </article>
               ))}
-            </Row>
-            <Row className="mt-5">
-              <Col className="text-center">
-                <Link 
-                  to="/categories"
-                  className="btn btn-primary btn-lg"
-                >
-                  Xem tất cả sản phẩm
-                </Link>
-              </Col>
-            </Row>
+            </div>
+            <div className="text-center mt-5">
+              <Link to="/categories" className="btn btn-custom btn-lg">Xem tất cả sản phẩm</Link>
+            </div>
           </>
         )}
       </Container>

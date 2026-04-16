@@ -180,7 +180,7 @@ export default function Categories() {
                       <div className="mt-auto">
                         <Link 
                           to={`/product/${product.id}`}
-                          className="btn btn-primary w-100"
+                          className="btn btn-custom w-100"
                         >
                           Xem Chi Tiết
                         </Link>

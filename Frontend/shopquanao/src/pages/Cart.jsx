@@ -24,10 +24,10 @@ export default function Cart() {
             Tiếp tục mua sắm
           </Link>
           
-          <div className="empty-cart">
+            <div className="empty-cart">
             <h2>🛒 Giỏ Hàng Trống</h2>
             <p>Bạn chưa có sản phẩm nào trong giỏ hàng</p>
-            <Link to="/categories" className="btn btn-primary btn-lg mt-4">
+            <Link to="/categories" className="btn btn-custom btn-lg mt-4">
               Khám Phá Sản Phẩm
             </Link>
           </div>
@@ -173,7 +173,7 @@ export default function Cart() {
 
               <Link 
                 to="/checkout"
-                className="btn btn-primary w-100 mt-4 checkout-btn"
+                className="btn btn-custom w-100 mt-4 checkout-btn"
               >
                 Tiến Hành Thanh Toán
               </Link>

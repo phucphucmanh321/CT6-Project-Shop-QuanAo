@@ -3,11 +3,10 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ErrorBoundary from './components/ErrorBoundary'
 
-// Lazy load components để tránh lỗi import
-const Hero = lazy(() => import('./components/Hero'))
-const Promotions = lazy(() => import('./components/Promotions'))
-const Products = lazy(() => import('./components/Products'))
+// Lazy load pages để tránh lỗi import
+const HomePage = lazy(() => import('./pages/HomePage'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const Categories = lazy(() => import('./pages/Categories'))
@@ -17,25 +16,27 @@ const Checkout = lazy(() => import('./pages/Checkout'))
 
 function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Header />
-      <Routes>
-        <Route path="/" element={
-          <Suspense fallback={<div style={{padding: '20px', textAlign: 'center'}}>Loading...</div>}>
-            <Hero />
-            <Promotions />
-            <Products />
-          </Suspense>
-        } />
-        <Route path="/categories" element={<Suspense fallback={<div>Loading...</div>}><Categories /></Suspense>} />
-        <Route path="/product/:id" element={<Suspense fallback={<div>Loading...</div>}><ProductDetail /></Suspense>} />
-        <Route path="/cart" element={<Suspense fallback={<div>Loading...</div>}><Cart /></Suspense>} />
-        <Route path="/checkout" element={<Suspense fallback={<div>Loading...</div>}><Checkout /></Suspense>} />
-        <Route path="/login" element={<Suspense fallback={<div>Loading...</div>}><Login /></Suspense>} />
-        <Route path="/register" element={<Suspense fallback={<div>Loading...</div>}><Register /></Suspense>} />
-      </Routes>
+      <main className="main-content">
+        <Suspense fallback={
+          <div style={{padding: '40px', textAlign: 'center', fontSize: '18px'}}>
+            ⏳ Đang tải...
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Suspense>
+      </main>
       <Footer />
-    </>
+    </ErrorBoundary>
   )
 }
 

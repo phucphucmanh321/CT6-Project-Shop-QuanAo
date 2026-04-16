@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
 :root {
   --text: #4a4a4a;
   --text-h: #000000;
@@ -109,3 +111,164 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* --- Chuột Trắng style overrides & custom styles --- */
+
+:root {
+  --ct-white: #ffffff;
+  --ct-black: #000000;
+  --ct-gray-bg: #f6f6f6;
+  --ct-muted: #6b6b6b;
+  --ct-max-width: 1200px;
+}
+
+body {
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background-color: var(--ct-gray-bg);
+  color: var(--ct-black);
+}
+
+/* Buttons */
+.btn-custom {
+  background-color: var(--ct-black);
+  color: var(--ct-white) !important;
+  border-radius: 0 !important;
+  padding: 10px 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid var(--ct-black);
+  transition: all 0.25s ease;
+}
+.btn-custom:hover {
+  background-color: var(--ct-white);
+  color: var(--ct-black) !important;
+  border: 1px solid var(--ct-black);
+}
+
+/* Header minimal */
+.site-header {
+  background: var(--ct-white);
+  border-bottom: 1px solid #e9e9e9;
+}
+.site-header .navbar {
+  padding: 0.75rem 1rem;
+}
+.site-logo {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.nav-link {
+  color: var(--ct-black) !important;
+  text-transform: uppercase;
+  font-size: 0.92rem;
+  letter-spacing: 1.5px;
+}
+.icon-outline {
+  border: 1px solid var(--ct-black);
+  padding: 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hero full-width */
+.hero-full {
+  width: 100%;
+  background-color: var(--ct-white);
+}
+.hero-image {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 420px;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+}
+.hero-overlay {
+  max-width: var(--ct-max-width);
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--ct-black);
+}
+.hero-title {
+  font-size: 48px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+}
+.hero-sub {
+  font-size: 16px;
+  color: var(--ct-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* Products grid - minimal card */
+.products-section {
+  padding: 3.5rem 0;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+.product-card {
+  background: var(--ct-white);
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.product-card .product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.product-card:hover img {
+  transform: scale(1.06);
+}
+.product-card .product-meta {
+  padding: 1rem 0.5rem;
+  text-align: left;
+}
+.product-card .product-title {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 0.5rem 0;
+}
+.product-card .product-price {
+  color: var(--ct-black);
+  font-weight: 700;
+}
+
+/* CTA section */
+.cta-section {
+  background: transparent;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+/* Spacing adjustments */
+.section-title {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 28px; letter-spacing: 2px; }
+  .hero-image { height: 40vh; min-height: 260px; }
+}
+

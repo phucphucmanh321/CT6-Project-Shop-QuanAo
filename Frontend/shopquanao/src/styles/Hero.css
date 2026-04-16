@@ -33,12 +33,12 @@
   font-weight: 600;
 }
 
-.hero-buttons .btn-primary {
+.hero-buttons .btn-custom {
   background-color: #000000;
   border-color: #000000;
 }
 
-.hero-buttons .btn-primary:hover {
+.hero-buttons .btn-custom:hover {
   background-color: #333333;
   border-color: #333333;
 }

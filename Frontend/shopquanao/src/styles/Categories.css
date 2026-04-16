@@ -107,7 +107,7 @@
   margin: 10px 0;
 }
 
-.btn-primary {
+.btn-custom {
   background: #333;
   border: none;
   border-radius: 5px;
@@ -116,7 +116,7 @@
   transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
+.btn-custom:hover {
   background: #555;
   transform: scale(1.02);
 }
