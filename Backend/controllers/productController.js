@@ -1,5 +1,109 @@
 const db = require("../config/db");
 
+exports.createProduct = (req, res) => {
+    const { name, description = null, price, cate_id } = req.body;
+    const imagePath = req.file ? `/uploads/products/${req.file.filename}` : null;
+
+    if (!name || price === undefined || !cate_id) {
+        return res.status(400).json({
+            message: "Thieu thong tin bat buoc: name, price, cate_id",
+        });
+    }
+
+    const parsedPrice = Number(price);
+    const parsedCateId = Number(cate_id);
+
+    if (Number.isNaN(parsedPrice) || parsedPrice < 0) {
+        return res.status(400).json({ message: "price khong hop le" });
+    }
+
+    if (!Number.isInteger(parsedCateId) || parsedCateId <= 0) {
+        return res.status(400).json({ message: "cate_id khong hop le" });
+    }
+
+    db.beginTransaction((transactionErr) => {
+        if (transactionErr) {
+            return res.status(500).json(transactionErr);
+        }
+
+        const productSql = `
+            INSERT INTO product(name, description, price, cate_id)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(
+            productSql,
+            [name, description, parsedPrice, parsedCateId],
+            (productErr, productResult) => {
+                if (productErr) {
+                    return db.rollback(() => res.status(500).json(productErr));
+                }
+
+                const productId = productResult.insertId;
+
+                if (!imagePath) {
+                    return db.commit((commitErr) => {
+                        if (commitErr) {
+                            return db.rollback(() => res.status(500).json(commitErr));
+                        }
+
+                        return res.status(201).json({
+                            message: "Them san pham thanh cong",
+                            product: {
+                                id: productId,
+                                name,
+                                description,
+                                price: parsedPrice,
+                                cate_id: parsedCateId,
+                                images: [],
+                            },
+                        });
+                    });
+                }
+
+                const imageSql = `
+                    INSERT INTO product_image(product_id, path, is_main)
+                    VALUES (?, ?, ?)
+                `;
+
+                db.query(
+                    imageSql,
+                    [productId, imagePath, 1],
+                    (imageErr, imageResult) => {
+                        if (imageErr) {
+                            return db.rollback(() => res.status(500).json(imageErr));
+                        }
+
+                        return db.commit((commitErr) => {
+                            if (commitErr) {
+                                return db.rollback(() => res.status(500).json(commitErr));
+                            }
+
+                            return res.status(201).json({
+                                message: "Them san pham thanh cong",
+                                product: {
+                                    id: productId,
+                                    name,
+                                    description,
+                                    price: parsedPrice,
+                                    cate_id: parsedCateId,
+                                    images: [
+                                        {
+                                            id: imageResult.insertId,
+                                            path: imagePath,
+                                            is_main: 1,
+                                        },
+                                    ],
+                                },
+                            });
+                        });
+                    }
+                );
+            }
+        );
+    });
+};
+
 exports.searchProducts = (req, res) => {
     const { q = "", cate_id, min_price, max_price, limit = 20, page = 1 } = req.query;
 
