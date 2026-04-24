@@ -1,4 +1,17 @@
+const fs = require("fs");
+const path = require("path");
 const db = require("../config/db");
+
+function removeUploadedFile(filePath) {
+    if (!filePath) return;
+
+    const normalizedPath = filePath.startsWith("/")
+        ? filePath.slice(1)
+        : filePath;
+    const absolutePath = path.join(__dirname, "..", normalizedPath);
+
+    fs.unlink(absolutePath, () => {});
+}
 
 exports.createProduct = (req, res) => {
     const { name, description = null, price, cate_id } = req.body;
@@ -101,6 +114,214 @@ exports.createProduct = (req, res) => {
                 );
             }
         );
+    });
+};
+
+exports.updateProduct = (req, res) => {
+    const { id } = req.params;
+    const { name, description = null, price, cate_id } = req.body;
+    const newImagePath = req.file ? `/uploads/products/${req.file.filename}` : null;
+
+    if (!name || price === undefined || !cate_id) {
+        if (newImagePath) removeUploadedFile(newImagePath);
+        return res.status(400).json({
+            message: "Thieu thong tin bat buoc: name, price, cate_id",
+        });
+    }
+
+    const parsedId = Number(id);
+    const parsedPrice = Number(price);
+    const parsedCateId = Number(cate_id);
+
+    if (!Number.isInteger(parsedId) || parsedId <= 0) {
+        if (newImagePath) removeUploadedFile(newImagePath);
+        return res.status(400).json({ message: "id khong hop le" });
+    }
+
+    if (Number.isNaN(parsedPrice) || parsedPrice < 0) {
+        if (newImagePath) removeUploadedFile(newImagePath);
+        return res.status(400).json({ message: "price khong hop le" });
+    }
+
+    if (!Number.isInteger(parsedCateId) || parsedCateId <= 0) {
+        if (newImagePath) removeUploadedFile(newImagePath);
+        return res.status(400).json({ message: "cate_id khong hop le" });
+    }
+
+    db.beginTransaction((transactionErr) => {
+        if (transactionErr) {
+            if (newImagePath) removeUploadedFile(newImagePath);
+            return res.status(500).json(transactionErr);
+        }
+
+        const productSql = `
+            SELECT id, name, description, price, cate_id
+            FROM product
+            WHERE id = ?
+            LIMIT 1
+        `;
+
+        db.query(productSql, [parsedId], (productErr, productResult) => {
+            if (productErr) {
+                return db.rollback(() => {
+                    if (newImagePath) removeUploadedFile(newImagePath);
+                    return res.status(500).json(productErr);
+                });
+            }
+
+            if (productResult.length === 0) {
+                return db.rollback(() => {
+                    if (newImagePath) removeUploadedFile(newImagePath);
+                    return res.status(404).json({ message: "San pham khong ton tai" });
+                });
+            }
+
+            const mainImageSql = `
+                SELECT id, path, is_main
+                FROM product_image
+                WHERE product_id = ? AND is_main = 1
+                ORDER BY id ASC
+                LIMIT 1
+            `;
+
+            db.query(mainImageSql, [parsedId], (imageErr, imageResult) => {
+                if (imageErr) {
+                    return db.rollback(() => {
+                        if (newImagePath) removeUploadedFile(newImagePath);
+                        return res.status(500).json(imageErr);
+                    });
+                }
+
+                const currentMainImage = imageResult[0] || null;
+                const updateProductSql = `
+                    UPDATE product
+                    SET name = ?, description = ?, price = ?, cate_id = ?
+                    WHERE id = ?
+                `;
+
+                db.query(
+                    updateProductSql,
+                    [name, description, parsedPrice, parsedCateId, parsedId],
+                    (updateErr) => {
+                        if (updateErr) {
+                            return db.rollback(() => {
+                                if (newImagePath) removeUploadedFile(newImagePath);
+                                return res.status(500).json(updateErr);
+                            });
+                        }
+
+                        if (!newImagePath) {
+                            return db.commit((commitErr) => {
+                                if (commitErr) {
+                                    return db.rollback(() => res.status(500).json(commitErr));
+                                }
+
+                                return res.json({
+                                    message: "Cap nhat san pham thanh cong",
+                                    product: {
+                                        id: parsedId,
+                                        name,
+                                        description,
+                                        price: parsedPrice,
+                                        cate_id: parsedCateId,
+                                        images: currentMainImage ? [currentMainImage] : [],
+                                    },
+                                });
+                            });
+                        }
+
+                        if (currentMainImage) {
+                            const updateImageSql = `
+                                UPDATE product_image
+                                SET path = ?, is_main = 1
+                                WHERE id = ?
+                            `;
+
+                            return db.query(
+                                updateImageSql,
+                                [newImagePath, currentMainImage.id],
+                                (updateImageErr) => {
+                                    if (updateImageErr) {
+                                        return db.rollback(() => {
+                                            removeUploadedFile(newImagePath);
+                                            return res.status(500).json(updateImageErr);
+                                        });
+                                    }
+
+                                    return db.commit((commitErr) => {
+                                        if (commitErr) {
+                                            return db.rollback(() => res.status(500).json(commitErr));
+                                        }
+
+                                        removeUploadedFile(currentMainImage.path);
+
+                                        return res.json({
+                                            message: "Cap nhat san pham thanh cong",
+                                            product: {
+                                                id: parsedId,
+                                                name,
+                                                description,
+                                                price: parsedPrice,
+                                                cate_id: parsedCateId,
+                                                images: [
+                                                    {
+                                                        id: currentMainImage.id,
+                                                        path: newImagePath,
+                                                        is_main: 1,
+                                                    },
+                                                ],
+                                            },
+                                        });
+                                    });
+                                }
+                            );
+                        }
+
+                        const insertImageSql = `
+                            INSERT INTO product_image(product_id, path, is_main)
+                            VALUES (?, ?, ?)
+                        `;
+
+                        return db.query(
+                            insertImageSql,
+                            [parsedId, newImagePath, 1],
+                            (insertImageErr, insertImageResult) => {
+                                if (insertImageErr) {
+                                    return db.rollback(() => {
+                                        removeUploadedFile(newImagePath);
+                                        return res.status(500).json(insertImageErr);
+                                    });
+                                }
+
+                                return db.commit((commitErr) => {
+                                    if (commitErr) {
+                                        return db.rollback(() => res.status(500).json(commitErr));
+                                    }
+
+                                    return res.json({
+                                        message: "Cap nhat san pham thanh cong",
+                                        product: {
+                                            id: parsedId,
+                                            name,
+                                            description,
+                                            price: parsedPrice,
+                                            cate_id: parsedCateId,
+                                            images: [
+                                                {
+                                                    id: insertImageResult.insertId,
+                                                    path: newImagePath,
+                                                    is_main: 1,
+                                                },
+                                            ],
+                                        },
+                                    });
+                                });
+                            }
+                        );
+                    }
+                );
+            });
+        });
     });
 };
 

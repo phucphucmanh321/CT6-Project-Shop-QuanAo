@@ -4,11 +4,12 @@ const uploadProductImage = require("../config/uploadProductImage");
 
 const {
     createProduct,
+    updateProduct,
     searchProducts,
     getProductDetail,
 } = require("../controllers/productController");
 
-router.post("/", (req, res, next) => {
+function handleSingleProductImageUpload(req, res, next) {
     uploadProductImage.single("image")(req, res, (err) => {
         if (err) {
             return res.status(400).json({ message: err.message });
@@ -16,7 +17,10 @@ router.post("/", (req, res, next) => {
 
         return next();
     });
-}, createProduct);
+}
+
+router.post("/", handleSingleProductImageUpload, createProduct);
+router.put("/:id", handleSingleProductImageUpload, updateProduct);
 router.get("/", searchProducts);
 router.get("/:id", getProductDetail);
 
